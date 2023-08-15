@@ -1,16 +1,16 @@
 # To-DO LIST
 
 ## General Features
-- [ ] Scoreboard support (Possibly)
+- [X] Scoreboard support (Possibly)
 - [ ] UI Support (Creating and Modifying islands, etc.)
 - [ ] Implement additional features (In development)
 
 ## ScoreHud Integration
 - [ ] Implement ScoreHud integration
-- [ ] Support for `skyblockpm.members`
+- [X] Support for `skyblockpm.online.members`
 - [ ] Support for `skyblockpm.lock`
 - [ ] Support for `skyblockpm.rank` (Once available in Skyblockpm)
-- [ ] Support for `skyblock.name`
+- [X] Support for `skyblock.name`
 
 ## Skyblock Related
 - [ ] Allow users to add icons in their Visit UI (button)
