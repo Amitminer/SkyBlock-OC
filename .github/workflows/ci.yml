@@ -32,17 +32,14 @@ jobs:
       matrix:
         php:
           - "8.2"
-
     steps:
       - uses: actions/checkout@v3
-
       - name: Setup PHP
         uses: pmmp/setup-php-action@2.0.0
         with:
           php-version: ${{ matrix.php }}
           install-path: "./bin"
           pm-version-major: "5"
-
       - name: Restore Composer package cache
         id: composer-cache
         uses: actions/cache@v2
@@ -50,15 +47,13 @@ jobs:
           path: "~/.cache/composer"
           key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
           restore-keys: "php-${{ matrix.php }}-composer-"
-
       - name: Install PHPStan Composer dependencies
         working-directory: ./tools/phpstan
         run: composer install --prefer-dist --no-interaction
-          
       - name: Run PHPStan
         working-directory: ./tools/phpstan
         run: vendor/bin/phpstan analyze
-     
+
   phar_build:
     name: Build phar
     permissions:
@@ -72,25 +67,22 @@ jobs:
           - "8.2"
     steps:
       - uses: actions/checkout@v3
-
-      - uses: pmmp/setup-php-action@main
+      - uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
-          install-path: "../bin"
-          pm-version-major: "5"
-          
-      - name: Install Composer dependencies
-        working-directory: ./tools/phpstan
-        run: composer install --prefer-dist --no-interaction
-        
-      - uses: SOF3/pharynx@v0.2
+          php-version: "8.2"
+      - uses: SOF3/pharynx@v0.1
         id: pharynx
-
+        with:
+          pharynx-version: "0.3.0"
       - uses: actions/upload-artifact@v3
         with:
-          name: plugin.phar
+          name: SkyBlockPM-OC.phar
           path: ${{ steps.pharynx.outputs.output-phar }}
-          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: SkyBlockPM-OC
+          path: ${{ steps.pharynx.outputs.output-dir }}
+
   del_runs:
     runs-on: ubuntu-latest
     permissions:
