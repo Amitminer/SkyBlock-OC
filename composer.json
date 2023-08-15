@@ -1,0 +1,11 @@
+{
+    "name": "vecnavium/skyblockspm",
+    "license": " LGPL-3.0 license",
+    "type": "pocketmine-plugin",
+    "scripts": {
+        "build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=SkyBlockPM-OC.phar"
+    },
+    "autoload": {
+        "classmap": ["src"]
+    }
+}
