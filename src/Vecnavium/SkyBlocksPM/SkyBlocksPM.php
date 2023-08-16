@@ -26,6 +26,7 @@ use Vecnavium\SkyBlocksPM\listener\EventListener;
 use Vecnavium\SkyBlocksPM\messages\Messages;
 use Vecnavium\SkyBlocksPM\player\PlayerManager;
 use Vecnavium\SkyBlocksPM\skyblock\SkyBlockManager;
+use Vecnavium\SkyBlocksPM\scorehud\ScoreHudAddon;
 use function array_search;
 use function class_exists;
 use function rename;
