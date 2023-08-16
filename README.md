@@ -36,4 +36,5 @@ And possibly few more that isn't listed as it's in development.
 
 # Credits 
 
-- [Cosmicnebula200](https://github.com/cosmicnebula200) for making this entire project possible.
+- [Vecnavium](https://github.com/Vecnavium)
+- [Cosmicnebula200](https://github.com/cosmicnebula200) 
