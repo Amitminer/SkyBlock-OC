@@ -7,6 +7,6 @@ parameters:
     scanDirectories:
         - vendor
     excludePaths:
-        - /src/Vecnavium/SkyBlocksPM/scorehud
-        - /src/Vecnavium/SkyBlocksPM/libs
-        - /src/Vecnavium/SkyBlocksPM/CheckUpdateTask.php
+        - src/Vecnavium/SkyBlocksPM/scorehud
+        - src/Vecnavium/SkyBlocksPM/libs
+        - src/Vecnavium/SkyBlocksPM/CheckUpdateTask.php
