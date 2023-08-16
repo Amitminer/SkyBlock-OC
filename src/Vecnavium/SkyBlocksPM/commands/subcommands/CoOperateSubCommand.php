@@ -12,6 +12,7 @@ use Vecnavium\SkyBlocksPM\player\PlayerManager;
 use Vecnavium\SkyBlocksPM\player\Player;
 use Vecnavium\SkyBlocksPM\skyblock\SkyBlock;
 use Vecnavium\SkyBlocksPM\SkyBlocksPM;
+use pocketmine\Server;
 use function array_search;
 use function in_array;
 use function strval;
@@ -56,7 +57,7 @@ class CoOperateSubCommand extends BaseSubCommand {
                 return;
             }
             $members = $skyblock->getMembers();
-            $coopPlayer = $this->plugin->getServer()->getPlayerExact($SBCoopPlayer);
+            $coopPlayer = Server::getInstance()->getPlayerExact($SBCoopPlayer->getName(););
             $coopPlayerName = $coopPlayer->getName();
 
             if (in_array($coopPlayerName, $members, true)) {
