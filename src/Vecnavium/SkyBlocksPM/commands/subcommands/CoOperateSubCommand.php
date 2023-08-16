@@ -37,11 +37,11 @@ class CoOperateSubCommand extends BaseSubCommand {
 
         if (!$sender instanceof Player) return;
 
-        $toCoopPlayer = $plugin->getPlayerManager()->getPlayer(($args['player'] instanceof Player ? $args['player']->getName() : strval($args['player'])));
+        $SBPlayer = $plugin->getPlayerManager()->getPlayer(($args['player'] instanceof Player ? $args['player']->getName() : strval($args['player'])));
         $skyblockPlayer = $plugin->getPlayerManager()->getPlayer($sender->getName());
         if (!$skyblockPlayer instanceof Player) return;
 
-        if (!$toCoopPlayer instanceof Player) {
+        if (!$SBPlayer instanceof Player) {
             $sender->sendMessage($plugin->getMessages()->getMessage('player-not-online'));
             return;
         }
@@ -56,17 +56,18 @@ class CoOperateSubCommand extends BaseSubCommand {
                 return;
             }
             $members = $skyblock->getMembers();
-            $coopPlayer = $this->plugin->getServer()->getPlayerExact($toCoopPlayer);
+            $coopPlayer = $this->plugin->getServer()->getPlayerExact($coopPlayerName);
+            $coopPlayerName = $coopPlayer->getName();
 
-            if (in_array($toCoopPlayer, $members, true)) {
-                $plugin->getPlayerManager()->removePlayerFromCoop($toCoopPlayer);
-                $message = str_replace('{PLAYER}', $toCoopPlayer, $plugin->getMessages()->getMessage('cooperator-removed'));
+            if (in_array($coopPlayerName, $members, true)) {
+                $plugin->getPlayerManager()->removePlayerFromCoop($coopPlayerName);
+                $message = str_replace('{PLAYER}', $coopPlayerName, $plugin->getMessages()->getMessage('cooperator-removed'));
                 $coopmessage = str_replace('{PLAYER}', $sender->getName(), $plugin->getMessages()->getMessage('removed-coop'));
                 $coopPlayer->sendMessage($coopmessage);
                 $sender->sendMessage($message);
             } else {
-                $plugin->getPlayerManager()->addCoopPlayer($toCoopPlayer);
-                $message = str_replace('{PLAYER}', $toCoopPlayer, $plugin->getMessages()->getMessage('cooperator-added'));
+                $plugin->getPlayerManager()->addCoopPlayer($coopPlayerName);
+                $message = str_replace('{PLAYER}', $coopPlayerName, $plugin->getMessages()->getMessage('cooperator-added'));
                 $coopmessage = str_replace('{PLAYER}', $sender->getName(), $plugin->getMessages()->getMessage('cooperated-player'));
                 $coopPlayer->sendMessage($coopmessage);
                 $sender->sendMessage($message);

@@ -73,15 +73,15 @@ class PlayerManager {
         return in_array($player, $this->coopPlayers);
     }
 
-    public function removePlayerFromCoop(string $playerName) {
+    public function removePlayerFromCoop(string $playerName): void {
         $index = array_search($playerName, $this->coopPlayers);
         if ($index !== false) {
             unset($this->coopPlayers[$index]);
         }
     }
 
-    public function addCoopPlayer(string $playerName) {
-        if (!$this->isPlayerInArray($playerName)) {
+    public function addCoopPlayer(string $playerName): void {
+        if (!$this->isCoopPlayer($playerName)) {
             $this->coopPlayers[] = $playerName;
         }
     }
