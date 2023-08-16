@@ -37,11 +37,11 @@ class CoOperateSubCommand extends BaseSubCommand {
 
         if (!$sender instanceof Player) return;
 
-        $SBPlayer = $plugin->getPlayerManager()->getPlayer(($args['player'] instanceof Player ? $args['player']->getName() : strval($args['player'])));
+        $SBCoopPlayer = $plugin->getPlayerManager()->getPlayer(($args['player'] instanceof Player ? $args['player']->getName() : strval($args['player'])));
         $skyblockPlayer = $plugin->getPlayerManager()->getPlayer($sender->getName());
         if (!$skyblockPlayer instanceof Player) return;
 
-        if (!$SBPlayer instanceof Player) {
+        if (!$SBCoopPlayer instanceof Player) {
             $sender->sendMessage($plugin->getMessages()->getMessage('player-not-online'));
             return;
         }
@@ -56,7 +56,7 @@ class CoOperateSubCommand extends BaseSubCommand {
                 return;
             }
             $members = $skyblock->getMembers();
-            $coopPlayer = $this->plugin->getServer()->getPlayerExact($coopPlayerName);
+            $coopPlayer = $this->plugin->getServer()->getPlayerExact($SBCoopPlayer);
             $coopPlayerName = $coopPlayer->getName();
 
             if (in_array($coopPlayerName, $members, true)) {
