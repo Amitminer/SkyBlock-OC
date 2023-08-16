@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace Vecnavium\SkyBlocksPM\commands\subcommands;
 
-use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseCommand;;
+use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseCommand;
+use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player as P;
 use pocketmine\utils\Config;
