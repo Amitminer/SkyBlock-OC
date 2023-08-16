@@ -3,4 +3,4 @@ composer.lock
 dev/
 output/
 .php-cs-fixer.cache
-workflow-remover.php
+workflow-remover.py
