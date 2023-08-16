@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace Vecnavium\SkyBlocksPM\commands\subcommands;
 
-use CortexPE\Commando\args\RawStringArgument;
-use CortexPE\Commando\BaseSubCommand;
+use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\args\RawStringArgument;
+use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player as P;
 use pocketmine\utils\Utils;
 use Ramsey\Uuid\Uuid;
-use Vecnavium\SkyBlocksPM\commands\args\IslandNameArgument;
 use Vecnavium\SkyBlocksPM\player\Player;
 use Vecnavium\SkyBlocksPM\SkyBlocksPM;
 use function strval;
-use function substr;
 
 class CreateSubCommand extends BaseSubCommand {
 
     protected function prepare(): void {
         $this->setPermission('skyblockspm.create');
-        $this->registerArgument(0, new IslandNameArgument('name'));
+        $this->registerArgument(0, new RawStringArgument('name'));
     }
 
     /**
@@ -49,12 +47,9 @@ class CreateSubCommand extends BaseSubCommand {
             return;
         }
         $sender->sendMessage($plugin->getMessages()->getMessage('skyblock-creating'));
-
-        // Hotfix for those with pre-existing SkyBlocksPM databases where the UUID length is specified as 32, and not 36
-        $id = substr(Uuid::uuid4()->toString(), 0, -4);
-
+        $id = Uuid::uuid4()->toString();
         $player->setSkyBlock($id);
-        $plugin->getGenerator()->generateIsland($sender, $id, strval($args['name']));
+        $plugin->getGenerator()->generateIsland($sender, $id, strval($args['name'])); // Name validation?
     }
 
 }

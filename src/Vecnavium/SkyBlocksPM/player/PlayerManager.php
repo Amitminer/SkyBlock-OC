@@ -6,7 +6,6 @@ namespace Vecnavium\SkyBlocksPM\player;
 
 use pocketmine\player\Player as P;
 use Vecnavium\SkyBlocksPM\SkyBlocksPM;
-use function substr;
 
 class PlayerManager {
 
@@ -49,15 +48,13 @@ class PlayerManager {
     }
 
     public function createPlayer(P $player): void {
-        // Hotfix for those with pre-existing SkyBlocksPM databases where the UUID length is specified as 32, and not 36
-        $uuid = substr($player->getUniqueId()->toString(), 0, -4);
         $this->plugin->getDataBase()->executeInsert('skyblockspm.player.create',
         [
-            'uuid' => $uuid,
+            'uuid' => $player->getUniqueId()->toString(),
             'name' => $player->getName(),
             'skyblock' => ''
         ]);
-        $this->players[$player->getName()] = new Player($uuid, $player->getName(), '');
+        $this->players[$player->getName()] = new Player($player->getUniqueId()->toString(), $player->getName(), '');
     }
 
     /**

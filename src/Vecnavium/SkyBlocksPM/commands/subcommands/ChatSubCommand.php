@@ -2,7 +2,7 @@
 
 namespace Vecnavium\SkyBlocksPM\commands\subcommands;
 
-use CortexPE\Commando\BaseSubCommand;
+use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player as P;
 use Vecnavium\SkyBlocksPM\SkyBlocksPM;

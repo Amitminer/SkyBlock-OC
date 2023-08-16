@@ -18,7 +18,7 @@ use Vecnavium\SkyBlocksPM\commands\subcommands\{
     VisitSubCommand,
     MembersSubCommand
 };
-use CortexPE\Commando\BaseCommand;
+use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginBase;
 use Vecnavium\SkyBlocksPM\SkyBlocksPM;

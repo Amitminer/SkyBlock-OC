@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Vecnavium\SkyBlocksPM\config\database;
 
-use libMarshal\attributes\Field;
-use libMarshal\MarshalTrait;
+use Vecnavium\SkyBlocksPM\libs\libMarshal\attributes\Field;
+use Vecnavium\SkyBlocksPM\libs\libMarshal\MarshalTrait;
 
 class SQLiteConfig{
     use MarshalTrait;
