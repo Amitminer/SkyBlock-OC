@@ -12,6 +12,9 @@ class PlayerManager {
     /** @var Player[] */
     private array $players = [];
     
+    /** @var coopPlayers[] */
+    public array $coopPlayers = [];
+    
     public function __construct(private SkyBlocksPM $plugin) {}
 
     public function loadPlayer(P $player): void{
@@ -64,6 +67,23 @@ class PlayerManager {
      */
     public function getPlayer(string $name): ?Player {
         return $this->players[$name] ?? null;
+    }
+    
+    public function isCoopPlayer(string $player): bool {
+        return in_array($player, $this->coopPlayers);
+    }
+
+    public function removePlayerFromCoop(string $playerName) {
+        $index = array_search($playerName, $this->coopPlayers);
+        if ($index !== false) {
+            unset($this->coopPlayers[$index]);
+        }
+    }
+
+    public function addCoopPlayer(string $playerName) {
+        if (!$this->isPlayerInArray($playerName)) {
+            $this->coopPlayers[] = $playerName;
+        }
     }
 
     /**

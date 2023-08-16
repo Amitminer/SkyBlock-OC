@@ -51,4 +51,7 @@ permissions:
   skyblockspm.kick:
     default: true
     description: Kick Island Members
+  skyblockspm.cooperate:
+    default: true
+    description: Allows another player to interact with your island
 ...
