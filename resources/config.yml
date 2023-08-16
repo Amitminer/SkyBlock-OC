@@ -11,7 +11,7 @@ database:
   sqlite:
     # The file name of the database in the plugin data folder.
     # You can also put an absolute path here.
-    file: skyblockspm.sql
+    file: skyblockspm.db
 
   # Edit these settings only if you choose "mysql".
   mysql:

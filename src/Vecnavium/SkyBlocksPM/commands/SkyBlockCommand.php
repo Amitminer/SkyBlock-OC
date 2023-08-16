@@ -16,7 +16,8 @@ use Vecnavium\SkyBlocksPM\commands\subcommands\{
     SetWorldCommand,
     TpSubCommand,
     VisitSubCommand,
-    MembersSubCommand
+    MembersSubCommand,
+    CoOperateSubCommand
 };
 use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseCommand;
 use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseSubCommand;
@@ -47,6 +48,7 @@ class SkyBlockCommand extends BaseCommand {
         $this->registerSubCommand(new InviteSubCommand($this->skyblockspm, 'invite', 'Invites the player to your SkyBlock Island'));
         $this->registerSubCommand(new VisitSubCommand($this->skyblockspm, 'visit', 'Visit a players SkyBlock Island'));
         $this->registerSubCommand(new MembersSubCommand($this->skyblockspm, 'members','Show all the members of a island', ['member']));
+        $this->registerSubCommand(new CoOperateSubCommand($this->skyblockspm, 'cooperate','Allows another player to interact with your island', ['coop']));
     }
 
     /**
