@@ -4,25 +4,7 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-    inputs:
-      days:
-        description: 'Number of days.'
-        required: false
-        default: 3
-      delete_run_by_conclusion_pattern:
-        description: 'Remove workflow by conclusion: action_required, cancelled, failure, skipped, success'
-        required: true
-        default: "All"
-        type: choice
-        options:
-          - "All"
-          - cancelled
-          - failure
-          - skipped
-      dry_run:
-        description: 'Only log actions, do not perform any delete operations.'
-        required: false
-
+  
 jobs:
   build:
     name: PHPStan analysis
@@ -48,23 +30,12 @@ jobs:
           key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
           restore-keys: "php-${{ matrix.php }}-composer-"
       - name: Install PHPStan Composer dependencies
-        working-directory: ./tools/phpstan
         run: composer install --prefer-dist --no-interaction
       - name: Run PHPStan
-        working-directory: ./tools/phpstan
         run: vendor/bin/phpstan analyze
 
-  phar_build:
-    name: Build phar
-    permissions:
-      contents: write
-    needs: [build]
+  build-phar:
     runs-on: ubuntu-20.04
-    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-    strategy:
-      matrix:
-        php:
-          - "8.2"
     steps:
       - uses: actions/checkout@v3
       - uses: shivammathur/setup-php@v2
@@ -75,22 +46,8 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: SkyBlockPM-OC.phar
-          path: ${{ steps.pharynx.outputs.output-phar }}
+          path: ${{steps.pharynx.outputs.output-phar}}
       - uses: actions/upload-artifact@v3
         with:
           name: SkyBlockPM-OC
-          path: ${{ steps.pharynx.outputs.output-dir }}
-
-  del_runs:
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-    steps:
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: ${{ github.event.inputs.days }}
-          delete_run_by_conclusion_pattern: ${{ github.event.inputs.delete_run_by_conclusion_pattern }}
-          dry_run: ${{ github.event.inputs.dry_run }}
+          path: ${{steps.pharynx.outputs.output-dir}}
