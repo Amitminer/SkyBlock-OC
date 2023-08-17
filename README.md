@@ -21,7 +21,7 @@ SkyBlocksPM
 - [x] Starting Skyblock Chests (The chests will have the same contents from the ones which were present and as well as NPCs while using the `/is setworld` command)
 - [x] Island Settings (Such as Interact, Pickup, Place Blocks, etc.)
 - [x] Private Island Chat
-- [X] Co-Operate System! `/is coop {playerName'!
+- [X] Co-Operate System! `/is coop {playerName}`.
 
 # Setup 
 
