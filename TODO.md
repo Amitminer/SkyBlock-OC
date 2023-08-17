@@ -20,7 +20,7 @@
 
 ## Commands
 - [X] Add command: 'is members'
-- [ ] Add command: `/is cooperate {player name}` (Allows player interaction with the island)
+- [X] Add command: `/is cooperate {player name}` (Allows player interaction with the island)
 - [ ] Add command: `/is rank` (Displays current rank on the island) [not sure]
     - [ ] Implement rank translation logic
 - [ ] Add command: `/is promote {player}` (Founder only) (Changes player's rank)
