@@ -12,7 +12,7 @@ class PlayerManager {
     /** @var Player[] */
     private array $players = [];
 
-    /** @var coopPlayers[] */
+    /** @var array */
     public array $coopPlayers = [];
 
     public function __construct(private SkyBlocksPM $plugin) {}

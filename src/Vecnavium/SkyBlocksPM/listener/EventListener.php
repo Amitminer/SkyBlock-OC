@@ -181,7 +181,7 @@ class EventListener implements Listener {
 
     public function onPickup(EntityItemPickupEvent $event): void {
         $entity = $event->getEntity();
-        if (!$entity instanceof Player) {
+        if (!$entity instanceof P) {
             return;
         }
 
