@@ -2,6 +2,11 @@
     "name": "vecnavium/skyblockspm",
     "description": "a ultimate skyblock plugin for pmmp.. remember this is fork version of SkyBlocksPM",
     "type": "pocketmine-plugin",
+    "scripts": {
+        "cs-fix": "vendor/bin/php-cs-fixer fix",
+        "analyze": "vendor/bin/phpstan",
+        "build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=SkyBlockPM.phar"
+    },
     "repositories": [{
         "type": "package",
         "package": {

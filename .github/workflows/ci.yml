@@ -6,7 +6,42 @@ on:
   workflow_dispatch:
   
 jobs:
-  build:
+  build-php:
+    name: Prepare PHP
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        php:
+          - "8.2"
+    steps:
+      - name: Build and prepare PHP cache
+        uses: pmmp/setup-php-action@main
+        with:
+          php-version: ${{ matrix.php }}
+          install-path: "../bin"
+          pm-version-major: "5"
+          
+  cs-fix:
+    name: code style check
+    needs: [build-php]
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        php:
+          - "8.2"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pmmp/setup-php-action@main
+        with:
+          php-version: ${{ matrix.php }}
+          install-path: "../bin"
+          pm-version-major: "5"
+      - name: Install Composer
+        run: curl -sS https://getcomposer.org/installer | php
+      - run: composer install
+      - run: composer cs-fix
+      
+  phpstan:
     name: PHPStan analysis
     runs-on: ubuntu-20.04
     strategy:
@@ -31,23 +66,30 @@ jobs:
           restore-keys: "php-${{ matrix.php }}-composer-"
       - name: Install PHPStan Composer dependencies
         run: composer install --prefer-dist --no-interaction
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyze
+      - name: phpstan analyze
+        run: composer analyze
 
   build-phar:
+    name: build phar
+    permissions:
+      contents: write
+    needs: [build-php]
     runs-on: ubuntu-20.04
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    strategy:
+      matrix:
+        php:
+          - "8.2"
     steps:
       - uses: actions/checkout@v3
-      - uses: shivammathur/setup-php@v2
+      - uses: pmmp/setup-php-action@main
         with:
-          php-version: "8.2"
+          php-version: ${{ matrix.php }}
+          install-path: "../bin"
+          pm-version-major: "5"
       - uses: SOF3/pharynx@v0.2
         id: pharynx
       - uses: actions/upload-artifact@v3
         with:
           name: SkyBlockPM-OC.phar
           path: ${{steps.pharynx.outputs.output-phar}}
-      - uses: actions/upload-artifact@v3
-        with:
-          name: SkyBlockPM-OC
-          path: ${{steps.pharynx.outputs.output-dir}}
