@@ -81,7 +81,6 @@ class CoOperateSubCommand extends BaseSubCommand {
     }
 
     private function ExecuteCooperatorAction(SkyBlocksPM $plugin, Player $coopPlayer, Player $player): void {
-        $plugin = $this->getOwningPlugin();
         $coopPlayerName = $coopPlayer->getName();
         $playerName = $player->getName();
         if ($plugin->getPlayerManager()->isPlayerCooperator($coopPlayerName)) {
@@ -98,13 +97,13 @@ class CoOperateSubCommand extends BaseSubCommand {
         $player->sendMessage($message);
     }
 
-    private function getReplacedMsg(string $msg, string $playerName): ?string {
+    private function getReplacedMsg(string $msg, string $playerName): string {
         $message = str_replace('{PLAYER}', $playerName, $this->getMSG($msg));
-        return $message ?? null;
+        return $message;
     }
 
-    private function getMSG(string $msg): ?string {
+    private function getMSG(string $msg): string {
         $message = $this->getOwningPlugin()->getMessages()->getMessage($msg);
-        return $message ?? null;
+        return $message;
     }
 }
