@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Vecnavium\SkyBlocksPM\listener;
 
@@ -29,15 +29,15 @@ use function strval;
 class EventListener implements Listener {
 
     private SkyBlocksPM $plugin;
-    
+
     public function __construct(SkyBlocksPM $plugin) {
         $this->plugin = $plugin;
     }
 
     /**
-     * @param PlayerJoinEvent $event
-     * @return void
-     */
+    * @param PlayerJoinEvent $event
+    * @return void
+    */
     public function onJoin(PlayerJoinEvent $event): void {
         $player = $this->plugin->getPlayerManager()->getPlayer($event->getPlayer()->getName());
         if (!$player instanceof Player) {
@@ -46,23 +46,24 @@ class EventListener implements Listener {
     }
 
     /**
-     * @param PlayerQuitEvent $event
-     * @return void
-     */
+    * @param PlayerQuitEvent $event
+    * @return void
+    */
     public function onLeave(PlayerQuitEvent $event): void {
         $this->plugin->getPlayerManager()->unloadPlayer($event->getPlayer());
     }
 
     /**
-     * @param BlockBreakEvent $event
-     * @return void
-     */
+    * @param BlockBreakEvent $event
+    * @return void
+    */
     public function onBreak(BlockBreakEvent $event): void {
         $player = $event->getPlayer();
+        $playerName = $player->getName();
         $skyblock = $this->plugin->getSkyBlockManager()->getSkyBlockByWorld($event->getBlock()->getPosition()->getWorld());
-        if(!$skyblock instanceof SkyBlock) return;
+        if (!$skyblock instanceof SkyBlock) return;
 
-        if (!in_array($player->getName(), $skyblock->getMembers(), true) && !$skyblock->getSetting(SkyblockSettingTypes::SETTING_BREAK)) {
+        if (!in_array($playerName, $skyblock->getMembers(), true) && !$skyblock->getSetting(SkyblockSettingTypes::SETTING_BREAK) && !$this->plugin->getPlayerManager()->isPlayerCooperator($playerName)) {
             $event->cancel();
             return;
         }
@@ -88,29 +89,31 @@ class EventListener implements Listener {
     }
 
     /**
-     * @param BlockPlaceEvent $event
-     * @return void
-     */
+    * @param BlockPlaceEvent $event
+    * @return void
+    */
     public function onPlace(BlockPlaceEvent $event): void {
+        $playerName = $event->getPlayer()->getName();
         $skyblock = $this->plugin->getSkyBlockManager()->getSkyBlockByWorld($event->getPlayer()->getPosition()->getWorld());
-        if(!$skyblock instanceof SkyBlock) return;
+        if (!$skyblock instanceof SkyBlock) return;
 
-        if (!in_array($event->getPlayer()->getName(), $skyblock->getMembers(), true) && !$skyblock->getSetting(SkyblockSettingTypes::SETTING_PLACE)) {
+        if (!in_array($playerName, $skyblock->getMembers(), true) && !$skyblock->getSetting(SkyblockSettingTypes::SETTING_PLACE) && !$this->plugin->getPlayerManager()->isPlayerCooperator($playerName)) {
             $event->cancel();
         }
     }
 
     /**
-     * @param PlayerInteractEvent $event
-     * @return void
-     */
+    * @param PlayerInteractEvent $event
+    * @return void
+    */
     public function onInteract(PlayerInteractEvent $event): void {
         $player = $event->getPlayer();
+        $playerName = $player->getName();
         $skyblock = $this->plugin->getSkyBlockManager()->getSkyBlockByWorld($player->getWorld());
-        if(!$skyblock instanceof SkyBlock) return;
+        if (!$skyblock instanceof SkyBlock) return;
         if ($event->getItem() instanceof Food) return;
 
-        if (!in_array($player->getName(), $skyblock->getMembers(), true)) {
+        if (!in_array($playerName, $skyblock->getMembers(), true) && !$this->plugin->getPlayerManager()->isPlayerCooperator($playerName)) {
             if ($event->getBlock() instanceof Chest) {
                 if (!$skyblock->getSetting(SkyblockSettingTypes::SETTING_INTERACT_CHEST)) {
                     $event->cancel();
@@ -126,9 +129,10 @@ class EventListener implements Listener {
     }
 
     /**
-     * @param EntityDamageEvent $event
-     * @return void
-     */
+    * @param EntityDamageEvent $event
+    * @return void
+    */
+    
     public function onPlayerDamage(EntityDamageEvent $event): void {
         $entity = $event->getEntity();
         if (!$entity instanceof P) return;
@@ -151,15 +155,15 @@ class EventListener implements Listener {
     }
 
     /**
-     * @param PlayerChatEvent $event
-     * @return void
-     */
+    * @param PlayerChatEvent $event
+    * @return void
+    */
     public function onChat(PlayerChatEvent $event): void {
         $player = $event->getPlayer();
         if (!in_array($player->getName(), $this->plugin->getChat(), true)) return;
 
         $skyBlockPlayer = $this->plugin->getPlayerManager()->getPlayer($player->getName());
-        if(!$skyBlockPlayer instanceof Player) return;
+        if (!$skyBlockPlayer instanceof Player) return;
 
         $skyBlock = $this->plugin->getSkyBlockManager()->getSkyBlockByUuid($skyBlockPlayer->getSkyBlock());
         if (!$skyBlock instanceof SkyBlock) {
@@ -177,12 +181,17 @@ class EventListener implements Listener {
 
     public function onPickup(EntityItemPickupEvent $event): void {
         $entity = $event->getEntity();
-        if(!$entity instanceof P) return;
+        if (!$entity instanceof Player) {
+            return;
+        }
 
         $skyblock = $this->plugin->getSkyBlockManager()->getSkyBlockByWorld($entity->getWorld());
-        if (!$skyblock instanceof SkyBlock) return;
+        if (!$skyblock instanceof SkyBlock) {
+            return;
+        }
 
-        if(!in_array($entity->getName(), $skyblock->getMembers(), true) && !$skyblock->getSetting(SkyblockSettingTypes::SETTING_PICKUP)) {
+        $playerName = $entity->getName();
+        if (!in_array($playerName, $skyblock->getMembers(), true) && !$skyblock->getSetting(SkyblockSettingTypes::SETTING_PICKUP) && $this->plugin->getPlayerManager()->isPlayerCooperator($playerName)) {
             $event->cancel();
         }
     }
