@@ -140,8 +140,9 @@ class SkyBlocksPM extends PluginBase {
         if ($isEnabled === false) {
             return;
         } elseif ($isEnabled === true) {
-            $this->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
-            $scoreHud = new ScoreHudAddon($this);
+            if ($this->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
+                $scoreHud = new ScoreHudAddon($this);
+            }
         } else {
             $this->getLogger()->error('ScoreHud Plugin Not Found..Please install ScoreHud from poggit or disable this feature from config.yml');
             throw new DisablePluginException;
