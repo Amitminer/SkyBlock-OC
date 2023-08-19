@@ -6,7 +6,7 @@
 - [ ] Implement additional features (In development)
 
 ## ScoreHud Integration
-- [ ] Implement ScoreHud integration
+- [X] Implement ScoreHud integration
 - [X] Support for `skyblockpm.online.members`
 - [ ] Support for `skyblockpm.lock`
 - [X] Support for `skyblockpm.rank` (Once available in Skyblockpm)
