@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS skyblockspm_sb
     uuid VARCHAR(36) PRIMARY KEY,
     name VARCHAR(32),
     leader VARCHAR(32),
+    managers TEXT,
     members TEXT,
     world TEXT,
     settings TEXT,
@@ -65,12 +66,13 @@ WHERE uuid=:uuid;
 -- #   :uuid string
 -- #   :name string
 -- #   :leader string
+-- #   :managers string
 -- #   :members string
 -- #   :world string
 -- #   :settings string
 -- #   :spawn string
-INSERT INTO skyblockspm_sb (uuid, name, leader, members, world, settings, spawn)
-VALUES (:uuid, :name, :leader, :members, :world, :settings, :spawn);
+INSERT INTO skyblockspm_sb (uuid, name, leader,managers, members, world, settings, spawn)
+VALUES (:uuid, :name, :leader, :managers, :members, :world, :settings, :spawn);
 -- # }
 
 -- # { delete
@@ -91,6 +93,7 @@ WHERE name=:name;
 -- #    :uuid string
 -- #    :name string
 -- #    :leader string
+-- #    :managers string
 -- #    :members string
 -- #    :world string
 -- #    :settings string
@@ -98,6 +101,7 @@ WHERE name=:name;
 UPDATE skyblockspm_sb
 SET name=:name,
     leader=:leader,
+    managers=:managers,
     members=:members,
     world=:world,
     settings=:settings,

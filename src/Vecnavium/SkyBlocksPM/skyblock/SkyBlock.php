@@ -13,6 +13,7 @@ class SkyBlock {
      * @param string $uuid
      * @param string $name
      * @param string $leader
+     * @param string[] $managers
      * @param string[] $members
      * @param string $world
      * @param array<string,bool> $settings
@@ -22,6 +23,7 @@ class SkyBlock {
         private string $uuid,
         private string $name,
         private string $leader,
+        private array $managers,
         private array $members,
         private string $world,
         private array $settings,
@@ -62,6 +64,21 @@ class SkyBlock {
      */
     public function setLeader(string $leader): void {
         $this->leader = $leader;
+        $this->save();
+    }
+    
+    /**
+     * @return string[]
+     */
+    public function getManagers(): array {
+        return $this->managers;
+    }
+    
+    /**
+     * @param string[] $managers
+     */
+    public function setManagers(array $managers): void {
+        $this->managers = $managers;
         $this->save();
     }
 
@@ -143,6 +160,7 @@ class SkyBlock {
             'uuid' => $this->uuid,
             'name' => $this->name,
             'leader' => $this->leader,
+            'managers' => implode(',', $this->managers),
             'members' => implode(',', $this->members),
             'world' => $this->world,
             'settings' => json_encode($this->settings),
