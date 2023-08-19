@@ -4,7 +4,7 @@ api:
 - 5.4.0
 author: Vecnavium
 main: Vecnavium\SkyBlocksPM\SkyBlocksPM
-version: 1.6.3
+version: 1.6.2
 softdepend:
   - ScoreHud
 permissions:
@@ -54,4 +54,7 @@ permissions:
   skyblockspm.cooperate:
     default: true
     description: Allows another player to interact with your island
+  skyblockspm.manager:
+    default: true
+    description: Allows leader to set a player as manager of island
 ...

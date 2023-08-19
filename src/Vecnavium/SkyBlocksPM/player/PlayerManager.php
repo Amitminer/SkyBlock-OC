@@ -69,16 +69,34 @@ class PlayerManager {
         return $this->players[$name] ?? null;
     }
 
+    /**
+    * Checks if a player is a cooperator.
+    *
+    * @param string $playerName The name of the player to check.
+    * @return bool True if the player is a cooperator, false otherwise.
+    */
     public function isPlayerCooperator(string $playerName): bool {
         return isset($this->coopPlayers[$playerName]);
     }
 
+    /**
+    * Removes a cooperator from the list.
+    *
+    * @param string $playerName The name of the player to remove as a cooperator.
+    * @return void
+    */
     public function removeCooperator(string $playerName): void {
         if ($this->isPlayerCooperator($playerName)) {
             unset($this->coopPlayers[$playerName]);
         }
     }
 
+    /**
+    * Adds a cooperator to the list.
+    *
+    * @param string $playerName The name of the player to add as a cooperator.
+    * @return void
+    */
     public function addCooperator(string $playerName): void {
         if (!$this->isPlayerCooperator($playerName)) {
             $this->coopPlayers[$playerName] = true;

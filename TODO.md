@@ -20,11 +20,11 @@
 
 ## Commands
 - [X] Add command: 'is members'
-- [X] Add command: `/is cooperate {player name}` (Allows player interaction with the island)
+- [X] Add command: `/is cooperate playerName` (Allows player interaction with the island) for removing a player from coop re run command! `/is cooperate playerName`
 - [ ] Add command: `/is rank` (Displays current rank on the island) [not sure]
     - [ ] Implement rank translation logic
-- [ ] Add command: `/is promote {player}` (Founder only) (Changes player's rank)
-- [ ] Add command: `/is demote {player}` (Founder only) (Decreases player's rank)
+- [X] Add command: `/is manager {player}` (Founder only) (make player island manager)
+- [X] Add command: `/is manager {player}` (Founder only) (remove player from manager rank)
 
 ## Notes
-- The `/is promote` and `/is demote` features are under consideration and may be added in the future.
+- Some Features will be not added..

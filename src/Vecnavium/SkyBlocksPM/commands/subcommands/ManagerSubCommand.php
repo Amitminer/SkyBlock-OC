@@ -8,19 +8,19 @@ use Vecnavium\SkyBlocksPM\libs\CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use Vecnavium\SkyBlocksPM\commands\args\PlayerArgument;
-use Vecnavium\SkyBlocksPM\player\PlayerManager;
 use Vecnavium\SkyBlocksPM\player\Player as SBPlayer;
 use Vecnavium\SkyBlocksPM\skyblock\SkyBlock;
 use Vecnavium\SkyBlocksPM\SkyBlocksPM;
 use pocketmine\Server;
 use function array_search;
 use function in_array;
+use function str_replace;
 use function strval;
 
-class CoOperateSubCommand extends BaseSubCommand {
+class ManagerSubCommand extends BaseSubCommand {
 
     protected function prepare(): void {
-        $this->setPermission('skyblockspm.cooperate');
+        $this->setPermission('skyblockspm.manager');
         $this->registerArgument(0, new PlayerArgument('player'));
     }
 
@@ -41,19 +41,22 @@ class CoOperateSubCommand extends BaseSubCommand {
         }
 
         $playerName = $args['player'] instanceof Player ? $args['player']->getName() : strval($args['player']);
-        $coopPlayer = Server::getInstance()->getPlayerExact($playerName);
+        $manager = Server::getInstance()->getPlayerExact($playerName);
         $skyblockPlayer = $plugin->getPlayerManager()->getPlayer($sender->getName());
         if (!$skyblockPlayer instanceof SBPlayer) {
+           // var_dump($skyblockPlayer);
             return;
         }
 
-        if ($coopPlayer === null) {
-            $sender->sendMessage($this->getMSG('player-not-online'));
+        if ($manager === null) {
+            $notfound = $this->getMSG('player-not-online');
+            $sender->sendMessage($notfound);
             return;
         }
 
-        if ($coopPlayer->getName() === $sender->getName()) {
-            $sender->sendMessage($this->getMSG("no-self-coop"));
+        if ($manager->getName() === $sender->getName()) {
+            $noSelf = $this->getMSG("no-self-manager");
+            $sender->sendMessage($noSelf);
             return;
         }
 
@@ -64,41 +67,51 @@ class CoOperateSubCommand extends BaseSubCommand {
 
         $skyblock = $plugin->getSkyBlockManager()->getSkyBlockByUuid($skyblockPlayer->getSkyBlock());
         if ($skyblock instanceof SkyBlock) {
-            $senderName = $sender->getName();
-            $leaderName = $skyblock->getLeader();
-            $managers = $skyblock->getManagers();
-
-            if ($leaderName !== $senderName && !in_array($senderName, $managers, true)) {
-                $sender->sendMessage($this->getMSG('no-coop-perm'));
+            if ($skyblock->getLeader() !== $sender->getName()) {
+                $sender->sendMessage($this->getMSG('no-manager-perm'));
                 return;
             }
 
             $members = $skyblock->getMembers();
-            $coopPlayerName = $coopPlayer->getName();
+            //  var_dump($members);
+            $managerName = $manager->getName();
 
-            if (in_array($coopPlayerName, $members, true)) {
-                $sender->sendMessage($this->getReplacedMsg("already-member", $coopPlayerName));
+            if (!in_array($managerName, $members, true)) {
+                $sender->sendMessage($this->getMSG("not-island-member"));
                 return;
             }
-            $this->addCooperator($plugin, $coopPlayer, $sender);
+            $this->addManager($plugin, $skyblock, $manager, $sender);
         }
     }
 
-    private function addCooperator(SkyBlocksPM $plugin, Player $coopPlayer, Player $player): void {
-        $coopPlayerName = $coopPlayer->getName();
+    private function addManager(SkyBlocksPM $plugin, SkyBlock $skyblock, Player $manager, Player $player): void {
+        $managerName = $manager->getName();
         $playerName = $player->getName();
-        if ($plugin->getPlayerManager()->isPlayerCooperator($coopPlayerName)) {
-            $plugin->getPlayerManager()->removeCooperator($coopPlayerName);
-            $message = $this->getReplacedMsg("cooperator-removed", $coopPlayerName);
-            $coopmessage = $this->getReplacedMsg("removed-coop", $playerName);
+        $managers = $skyblock->getManagers();
+
+        if (in_array($managerName, $managers, true)) {
+            $managersIndex = array_search($managerName, $managers, true);
+            if ($managersIndex !== false) {
+                unset($managers[$managersIndex]);
+                $skyblock->setManagers($managers);
+                $this->save($skyblock);
+            }
+            $message = $this->getReplacedMsg("manager-removed", $managerName);
+            $Managermessage = $this->getReplacedMsg("manager-removed-player", $playerName);
         } else {
-            $plugin->getPlayerManager()->addCooperator($coopPlayerName);
-            $message = $this->getReplacedMsg("cooperator-added", $coopPlayerName);
-            $coopmessage = $this->getReplacedMsg("cooperated-player", $playerName);
+            $managers[] = $managerName;
+            $skyblock->setManagers($managers);
+            $message = $this->getReplacedMsg("manager-added", $managerName);
+            $Managermessage = $this->getReplacedMsg("manager-added-player", $playerName);
+            $this->save($skyblock);
         }
 
-        $coopPlayer->sendMessage($coopmessage);
+        $manager->sendMessage($Managermessage);
         $player->sendMessage($message);
+    }
+
+    private function save(SkyBlock $skyblock): void {
+        $skyblock->save();
     }
 
     private function getReplacedMsg(string $msg, string $playerName): string {
