@@ -134,13 +134,18 @@ class SkyBlocksPM extends PluginBase {
         if ($status) $this->chat[] = $player->getName();
         else unset($this->chat[array_search($player->getName(), $this->chat, true)]);
     }
-    
+
+
     public function checkScoreHud(): void {
-        $isEnabled = $this->getConfig()->get("scorehud");
-        if ($isEnabled === true) {
+        $isEnabled = $this->getConfig()->get("scorehud"); 
+        if ($isEnabled === false) {
+            return;
+        } elseif ($isEnabled === true) {
             if ($this->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
                 $scoreHud = new ScoreHudAddon($this);
             }
+        } else {
+            $this->getLogger()->error('ScoreHud Plugin Not Found..Please install ScoreHud from poggit or disable this feature from config.yml'); throw new DisablePluginException;
         }
     }
 
