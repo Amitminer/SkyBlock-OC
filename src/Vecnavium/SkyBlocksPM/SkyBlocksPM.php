@@ -26,6 +26,7 @@ use Vecnavium\SkyBlocksPM\listener\EventListener;
 use Vecnavium\SkyBlocksPM\messages\Messages;
 use Vecnavium\SkyBlocksPM\player\PlayerManager;
 use Vecnavium\SkyBlocksPM\skyblock\SkyBlockManager;
+use Vecnavium\SkyBlocksPM\scorehud\ScoreHudAddon;
 use function array_search;
 use function class_exists;
 use function rename;
@@ -139,7 +140,7 @@ class SkyBlocksPM extends PluginBase {
         if ($isEnabled === true) {
             if ($this->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
                 /** @var ScoreHudAddon $scoreHud */
-                $scoreHud = new \Vecnavium\SkyBlocksPM\scorehud\ScoreHudAddon($this);
+                $scoreHud = new ScoreHudAddon($this);
             }
         }
     }
