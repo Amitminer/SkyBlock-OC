@@ -29,8 +29,7 @@ class ScoreHudAddon {
     }
 
     public function onLoad(): void {
-        $duration = $this->getUpdateDuration();
-        $this->repeat(function() use ($duration): {
+        $this->repeat(function() {
             foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
                 if (!$player->isOnline()) {
                     continue;
@@ -40,7 +39,7 @@ class ScoreHudAddon {
                 (new PlayerTagUpdateEvent($player, new ScoreTag(ScoreHudTags::PLAYER_RANK, strval($this->getPlayerRank($player->getName())))))->call();
             }
         },
-            $duration);
+            $this->getUpdateDuration());
     }
 
     public function getUpdateDuration(): int {
