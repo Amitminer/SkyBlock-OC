@@ -26,7 +26,6 @@ use Vecnavium\SkyBlocksPM\listener\EventListener;
 use Vecnavium\SkyBlocksPM\messages\Messages;
 use Vecnavium\SkyBlocksPM\player\PlayerManager;
 use Vecnavium\SkyBlocksPM\skyblock\SkyBlockManager;
-use Vecnavium\SkyBlocksPM\scorehud\ScoreHudAddon;
 use function array_search;
 use function class_exists;
 use function rename;
@@ -134,12 +133,12 @@ class SkyBlocksPM extends PluginBase {
         if ($status) $this->chat[] = $player->getName();
         else unset($this->chat[array_search($player->getName(), $this->chat, true)]);
     }
-    
+
     public function checkScoreHud(): void {
         $isEnabled = $this->getConfig()->get("scorehud");
         if ($isEnabled === true) {
             if ($this->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
-                $scoreHud = new ScoreHudAddon($this);
+                $scoreHud = new \Vecnavium\SkyBlocksPM\scorehud\ScoreHudAddon($this);
             }
         }
     }

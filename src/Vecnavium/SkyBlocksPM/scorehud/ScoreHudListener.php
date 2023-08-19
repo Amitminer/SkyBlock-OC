@@ -23,7 +23,6 @@ class ScoreHudListener implements Listener {
     }
     public function onTagResolve(TagsResolveEvent $event) {
         $tag = $event->getTag();
-        $tags = explode('.', $tag->getName(), 2);
         $value = "";
         $playerName = $event->getPlayer()->getName();
 
