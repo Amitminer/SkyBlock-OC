@@ -23,6 +23,7 @@ class ScoreHudListener implements Listener {
     }
     public function onTagResolve(TagsResolveEvent $event) {
         $tag = $event->getTag();
+        $tags = $tag->getName();
         $value = "";
         $playerName = $event->getPlayer()->getName();
 
@@ -40,7 +41,6 @@ class ScoreHudListener implements Listener {
                 break;
         }
         $tag->setValue(strval($value));
-
     }
 
 }
