@@ -11,13 +11,10 @@ use Vecnavium\SkyBlocksPM\player\Player;
 use pocketmine\scheduler\ClosureTask;
 use Vecnavium\SkyBlocksPM\scorehud\ScoreHudListener;
 use Vecnavium\SkyBlocksPM\skyblock\SkyBlock;
+use Vecnavium\SkyBlocksPM\skyblock\SkyBlockRanks;
 use Vecnavium\SkyBlocksPM\SkyBlocksPM;
 
 class ScoreHudAddon {
-
-    public const ISLAND_NAME = "skyblockspm.name";
-    public const ISLAND_MEMBERS = "skyblockspm.online.members";
-    public const NOT_AVBLE = "N/A";
 
     protected SkyBlocksPM $plugin;
 
@@ -33,35 +30,56 @@ class ScoreHudAddon {
     }
 
     public function onLoad(): void {
-        $this->repeat(function() {
+        $duration = $plugin->getConfig()->get("scorehud-tag-update-duration");
+        $this->repeat(function() use ($duration): {
             foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
                 if (!$player->isOnline()) {
                     continue;
                 }
-                (new PlayerTagUpdateEvent($player, new ScoreTag(self::ISLAND_NAME, strval($this->getIslandName($player->getName())))))->call();
-                (new PlayerTagUpdateEvent($player, new ScoreTag(self::ISLAND_MEMBERS, strval($this->getOnlineMembers($player->getName())))))->call();
+                (new PlayerTagUpdateEvent($player, new ScoreTag(ScoreHudTags::ISLAND_NAME, strval($this->getIslandName($player->getName())))))->call();
+                (new PlayerTagUpdateEvent($player, new ScoreTag(ScoreHudTags::ISLAND_MEMBERS, strval($this->getOnlineMembers($player->getName())))))->call();
+                (new PlayerTagUpdateEvent($player,new ScoreTag(ScoreHudTags::PLAYER_RANK,strval($this->getPlayerRank($player->getName())))))->call();
             }
         },
-            10);
+            $duration);
+    }
+    
+    public function getPlayerRank(string $playerName): string{
+       $player = $this->getSkyBlockPlayer($playerName);
+        if (is_null($player)) {
+            return ScoreHudTags::NOT_AVBLE;
+        }
+        $island = $this->getSkyBlock($player);
+        if ($island === null) {
+            return ScoreHudTags::NOT_AVBLE;
+        }
+        $managers = $island->getManagers();
+        if(in_array($playerName,$managers)){
+            return SkyBlockRanks::MANAGER;
+        } elseif ($island->getLeader() === $playerName) {
+            return SkyBlockRanks::LEADER;
+        } else {
+            return SkyBlockRanks::MEMBER;
+        }
     }
 
     public function getIslandName(string $playerName): string {
         $player = $this->getSkyBlockPlayer($playerName);
         if (is_null($player)) {
-            return self::NOT_AVBLE;
+            return ScoreHudTags::NOT_AVBLE;
         }
         $island = $this->getSkyBlock($player);
         //var_dump($island);
         if ($island !== null) {
             return $island->getName();
         }
-        return self::NOT_AVBLE;
+        return ScoreHudTags::NOT_AVBLE;
     }
 
     public function getOnlineMembers(string $playerName): int|string {
         $player = $this->getSkyBlockPlayer($playerName);
         if (is_null($player)) {
-            return self::NOT_AVBLE;
+            return ScoreHudTags::NOT_AVBLE;
         }
         $island = $this->getSkyBlock($player);
 
@@ -80,7 +98,7 @@ class ScoreHudAddon {
             return $onlineMemberCount;
         }
 
-        return self::NOT_AVBLE;
+        return ScoreHudTags::NOT_AVBLE;
     }
 
     public function getSkyBlock(Player $player): ?SkyBlock {

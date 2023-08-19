@@ -8,6 +8,7 @@ use pocketmine\event\Listener;
 use Ifera\ScoreHud\scoreboard\ScoreTag;
 use Ifera\ScoreHud\event\PlayerTagUpdateEvent;
 use pocketmine\player\Player;
+use Vecnavium\SkyBlocksPM\scorehud\ScoreHudTags;
 use Vecnavium\SkyBlocksPM\SkyBlocksPM;
 use function count;
 use function strval;
@@ -26,19 +27,17 @@ class ScoreHudListener implements Listener {
         $value = "";
         $playerName = $event->getPlayer()->getName();
 
-        if ($tags[0] !== 'skyblockspm' || count($tags) < 2) {
-
-            return;
-        }
-
         switch ($tags[1]) {
 
-            case "name":
+            case ScoreHudTags::ISLAND_NAME:
                 $value = $this->scorehudManager->getIslandName($playerName);
                 break;
 
-            case "online.members":
+            case ScoreHudTags::ISLAND_MEMBERS:
                 $value = $this->scorehudManager->getOnlineMembers($playerName);
+                break;
+            case ScoreHudTags::PLAYER_RANK:
+                $value = $this->scorehudManager->getPlayerRank($playerName);
                 break;
         }
         $tag->setValue(strval($value));

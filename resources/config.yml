@@ -26,6 +26,7 @@ database:
   worker-limit: 1
 
 scorehud: false
+scorehud-tag-update-duration: 10 # 1 second 
 settings:
   autoinv:
     enabled: true
