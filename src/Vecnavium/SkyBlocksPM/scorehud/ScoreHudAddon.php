@@ -18,7 +18,6 @@ class ScoreHudAddon {
 
     protected SkyBlocksPM $plugin;
 
-
     public function __construct(SkyBlocksPM $plugin) {
         $this->plugin = $plugin;
         $this->registerEvents();
@@ -44,10 +43,11 @@ class ScoreHudAddon {
             $duration);
     }
     
-    public function getUpdateDuration(): void {
+    public function getUpdateDuration(): int {
         $isEnabled = $this->plugin->getConfig()->get("scorehud");
         if ($isEnabled === true) {
             $duration = $this->plugin->getConfig()->get("scorehud-tag-update-duration");
+            return $duration;
         }
     }
     
