@@ -9,7 +9,7 @@
 - [ ] Implement ScoreHud integration
 - [X] Support for `skyblockpm.online.members`
 - [ ] Support for `skyblockpm.lock`
-- [ ] Support for `skyblockpm.rank` (Once available in Skyblockpm)
+- [X] Support for `skyblockpm.rank` (Once available in Skyblockpm)
 - [X] Support for `skyblock.name`
 
 ## Skyblock Related
@@ -21,8 +21,6 @@
 ## Commands
 - [X] Add command: 'is members'
 - [X] Add command: `/is cooperate playerName` (Allows player interaction with the island) for removing a player from coop re run command! `/is cooperate playerName`
-- [ ] Add command: `/is rank` (Displays current rank on the island) [not sure]
-    - [ ] Implement rank translation logic
 - [X] Add command: `/is manager {player}` (Founder only) (make player island manager)
 - [X] Add command: `/is manager {player}` (Founder only) (remove player from manager rank)
 
