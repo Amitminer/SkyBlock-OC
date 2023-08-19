@@ -2,7 +2,7 @@
 
 namespace Vecnavium\SkyBlocksPM\scorehud;
 
-final class ScoreHudTags {
+class ScoreHudTags {
 
     const ISLAND_NAME = "skyblockspm.name";
     const ISLAND_MEMBERS = "skyblockspm.online.members";

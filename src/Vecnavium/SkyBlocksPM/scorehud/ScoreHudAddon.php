@@ -37,22 +37,19 @@ class ScoreHudAddon {
                 }
                 (new PlayerTagUpdateEvent($player, new ScoreTag(ScoreHudTags::ISLAND_NAME, strval($this->getIslandName($player->getName())))))->call();
                 (new PlayerTagUpdateEvent($player, new ScoreTag(ScoreHudTags::ISLAND_MEMBERS, strval($this->getOnlineMembers($player->getName())))))->call();
-                (new PlayerTagUpdateEvent($player,new ScoreTag(ScoreHudTags::PLAYER_RANK,strval($this->getPlayerRank($player->getName())))))->call();
+                (new PlayerTagUpdateEvent($player, new ScoreTag(ScoreHudTags::PLAYER_RANK, strval($this->getPlayerRank($player->getName())))))->call();
             }
         },
             $duration);
     }
-    
+
     public function getUpdateDuration(): int {
-        $isEnabled = $this->plugin->getConfig()->get("scorehud");
-        if ($isEnabled === true) {
-            $duration = $this->plugin->getConfig()->get("scorehud-tag-update-duration");
-            return $duration;
-        }
+        $duration = $this->plugin->getConfig()->get("scorehud-tag-update-duration");
+        return $duration;
     }
-    
-    public function getPlayerRank(string $playerName): string{
-       $player = $this->getSkyBlockPlayer($playerName);
+
+    public function getPlayerRank(string $playerName): string {
+        $player = $this->getSkyBlockPlayer($playerName);
         if (is_null($player)) {
             return ScoreHudTags::NOT_AVBLE;
         }
@@ -61,7 +58,7 @@ class ScoreHudAddon {
             return ScoreHudTags::NOT_AVBLE;
         }
         $managers = $island->getManagers();
-        if(in_array($playerName,$managers)){
+        if (in_array($playerName, $managers)) {
             return SkyBlockRanks::MANAGER;
         } elseif ($island->getLeader() === $playerName) {
             return SkyBlockRanks::LEADER;

@@ -139,7 +139,6 @@ class SkyBlocksPM extends PluginBase {
         $isEnabled = $this->getConfig()->get("scorehud");
         if ($isEnabled === true) {
             if ($this->getServer()->getPluginManager()->getPlugin("ScoreHud") !== null) {
-                /** @var ScoreHudAddon $scoreHud */
                 $scoreHud = new ScoreHudAddon($this);
             }
         }
