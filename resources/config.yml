@@ -25,7 +25,7 @@ database:
   # Recommended: 1 for sqlite, 2 for MySQL. You may want to further increase this value if your MySQL connection is very slow.
   worker-limit: 1
 
-scorehud: false
+scorehud: true
 scorehud-tag-update-duration: 10 # 1 second 
 settings:
   autoinv:

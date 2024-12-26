@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vecnavium\SkyBlocksPM\scorehud;
 
-class ScoreHudTags {
+interface ScoreHudTags {
 
-    const ISLAND_NAME = "skyblockspm.name";
-    const ISLAND_MEMBERS = "skyblockspm.online.members";
-    const PLAYER_RANK = "skyblockspm.rank";
-    const NOT_AVBLE = "N/A";
+    public const ISLAND_NAME = "skyblockspm.name";
+    public const ISLAND_MEMBERS = "skyblockspm.online.members";
+    public const PLAYER_RANK = "skyblockspm.rank";
+    public const NOT_AVBLE = "N/A";
 }

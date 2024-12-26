@@ -23,9 +23,11 @@ class ScoreHudListener implements Listener {
     }
     public function onTagResolve(TagsResolveEvent $event) {
         $tag = $event->getTag();
-        $tags = $tag->getName();
+        $tags = explode('.', $tag->getName(), 2);
         $value = "";
         $playerName = $event->getPlayer()->getName();
+
+        if ($tags[0] !== 'skyblockspm' || count($tags) < 2) return;
 
         switch ($tags[1]) {
 
