@@ -161,8 +161,10 @@ class EventListener implements Listener
         };
         if ($shouldCancel) $event->cancel();
     }
-    
+
     /**
+     * Handles the PlayerChatEvent.
+     *
      * @param PlayerChatEvent $event
      * @return void
      */
@@ -173,42 +175,38 @@ class EventListener implements Listener
         $isGlobalForce = str_starts_with($message, "!");
 
         $skyBlockPlayer = $this->plugin->getPlayerManager()->getPlayer($player->getName());
-        if (!$skyBlockPlayer instanceof Player) return;
+        if (!$skyBlockPlayer instanceof Player) {
+            return;
+        }
 
         $skyBlock = $this->plugin->getSkyBlockManager()->getSkyBlockByUuid($skyBlockPlayer->getSkyBlock());
         if (!$skyBlock instanceof SkyBlock) {
-            if (!$isGlobalForce) {
-                $player->sendMessage($this->plugin->getMessages()->getMessage('no-skyblock'));
+            if ($isGlobalForce) {
+                $player->sendMessage("Create an island first!");
             }
-            $event->cancel();
             return;
         }
 
         $inIslandChat = in_array($player->getName(), $this->plugin->getChat(), true);
 
         if ($inIslandChat) {
+            // Island chat mode is ON
             if ($isGlobalForce) {
-                // Send to global if ! prefix
-                $message = substr($message, 1);
-                $event->setMessage($message);
-                return;
+                $event->setMessage(substr($message, 1)); // Strip "!" for global chat
+            } else {
+                $this->sendIslandMessage($player, $skyBlock, $message);
+                $event->cancel();
             }
-            $this->sendIslandMessage($player, $skyBlock, $message);
-            $event->cancel();
             return;
         }
 
-        if (!$inIslandChat) {
-            if ($isGlobalForce) {
-                // Island message with ! when chat is off
-                $message = substr($message, 1);
-                $this->sendIslandMessage($player, $skyBlock, $message);
-                $event->cancel();
-                return;
-            }
-            return;
+        // Island chat mode is OFF
+        if ($isGlobalForce) {
+            $this->sendIslandMessage($player, $skyBlock, substr($message, 1)); // Send to island with "!" prefix
+            $event->cancel();
         }
     }
+
 
     /**
      * Helper method to send message to all island members
