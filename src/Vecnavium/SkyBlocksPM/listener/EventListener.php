@@ -161,6 +161,7 @@ class EventListener implements Listener
         };
         if ($shouldCancel) $event->cancel();
     }
+    
     /**
      * @param PlayerChatEvent $event
      * @return void
@@ -171,7 +172,6 @@ class EventListener implements Listener
         $message = $event->getMessage();
         $isGlobalForce = str_starts_with($message, "!");
 
-        // Get player's SkyBlock instance
         $skyBlockPlayer = $this->plugin->getPlayerManager()->getPlayer($player->getName());
         if (!$skyBlockPlayer instanceof Player) return;
 
@@ -180,12 +180,12 @@ class EventListener implements Listener
             if (!$isGlobalForce) {
                 $player->sendMessage($this->plugin->getMessages()->getMessage('no-skyblock'));
             }
+            $event->cancel();
             return;
         }
 
         $inIslandChat = in_array($player->getName(), $this->plugin->getChat(), true);
 
-        // Handle island chat mode ON
         if ($inIslandChat) {
             if ($isGlobalForce) {
                 // Send to global if ! prefix
@@ -193,13 +193,11 @@ class EventListener implements Listener
                 $event->setMessage($message);
                 return;
             }
-            // Send to island chat
             $this->sendIslandMessage($player, $skyBlock, $message);
             $event->cancel();
             return;
         }
 
-        // Handle island chat mode OFF
         if (!$inIslandChat) {
             if ($isGlobalForce) {
                 // Island message with ! when chat is off
@@ -208,7 +206,6 @@ class EventListener implements Listener
                 $event->cancel();
                 return;
             }
-            // Let normal messages go to global
             return;
         }
     }
